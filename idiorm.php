@@ -2026,6 +2026,7 @@
             // remove any expression fields as they are already baked into the query
             $values = array_values(array_diff_key($this->_dirty_fields, $this->_expr_fields));
 
+            self::_setup_db('SAVE', $this->id());
             if (!$this->_is_new) { // UPDATE
                 // If there are no dirty values, do nothing
                 if (empty($values) && empty($this->_expr_fields)) {
@@ -2102,7 +2103,6 @@
             $query[] = "UPDATE {$this->_quote_identifier($this->_table_name)} SET";
 
             $field_list = array();
-            self::_setup_db('UPDATE', $this->id());
             foreach ($this->_dirty_fields as $key => $value) {
                 if(!array_key_exists($key, $this->_expr_fields)) {
                     $value = '?';
@@ -2138,6 +2138,7 @@
          * Delete this record from the database
          */
         public function delete() {
+            self::_setup_db('SAVE', $this->id());
             $query = array(
                 "DELETE FROM",
                 $this->_quote_identifier($this->_table_name)
@@ -2150,6 +2151,7 @@
          * Delete many records from the database
          */
         public function delete_many() {
+            self::_setup_db('SAVE', $this->id());
             // Build and return the full DELETE statement by concatenating
             // the results of calling each separate builder method.
             $query = $this->_join_if_not_empty(" ", array(
