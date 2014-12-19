@@ -286,6 +286,7 @@
                     $db->setAttribute(PDO::ATTR_ERRMODE, $_config[$connection_name]['error_mode']);
                 } catch (PDOException $e) {
                     unset(self::$_config[$connection_name]['db_array'][$_db_array_index]);
+                    self::$_config[$connection_name]['db_array'] = array_values(self::$_config[$connection_name]['db_array']);
                     if (function_exists('apc_store')) {
                         apc_store(self::$_config[$connection_name]['db_array_cache_key'], self::$_config[$connection_name]['db_array'], self::$_config[$connection_name]['db_array_cache_ttl']);
                     }
